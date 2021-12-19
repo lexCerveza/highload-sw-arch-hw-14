@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  balancer:
+    image: anroe/nginx-geoip2
+    volumes:
+      - ./balancer:/etc/nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - uk
+      - us1
+      - us2
+      - other
+      - backup
+  uk:
+    image: nginx:latest
+    volumes:
+      - ./nginx-configs/uk.conf:/etc/nginx/conf.d/nginx.conf
+  us1:
+    image: nginx:latest
+    volumes:
+      - ./nginx-configs/us1.conf:/etc/nginx/conf.d/nginx.conf
+  us2:
+    image: nginx:latest
+    volumes:
+      - ./nginx-configs/us2.conf:/etc/nginx/conf.d/nginx.conf
+  other:
+    image: nginx:latest
+    volumes:
+      - ./nginx-configs/other.conf:/etc/nginx/conf.d/nginx.conf
+  backup:
+    image: nginx:latest
+    volumes:
+      - ./nginx-configs/backup.conf:/etc/nginx/conf.d/nginx.conf
